@@ -1,31 +1,32 @@
+'use client';
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { BookProvider } from './context/BookContext';
-import { MainLayout } from './layouts/MainLayout';
-import { CatalogPage } from './pages/CatalogPage';
-import { BookDetailPage } from './pages/BookDetailPage';
-import { NotesPage } from './pages/NotesPage';
+import { BookProvider } from '@/context/BookContext';
+import { MainLayout } from '@/layouts/MainLayout';
+import { CatalogPage } from '@/views/CatalogPage';
+import { BookDetailPage } from '@/views/BookDetailPage';
+import { NotesPage } from '@/views/NotesPage';
 
-export const App: React.FC = () => {
+export const AppRouterWrapper: React.FC = () => {
   return (
     <BrowserRouter>
       <BookProvider>
         <Routes>
-          {/* Nested Route: MainLayout membungkus seluruh sub-halaman via <Outlet /> */}
           <Route path="/" element={<MainLayout />}>
-            {/* Redirect index path '/' ke '/katalog' */}
+            {/* Redirect root '/' to '/katalog' */}
             <Route index element={<Navigate to="/katalog" replace />} />
 
-            {/* Halaman Utama Katalog (/katalog) */}
+            {/* Catalog Page (/katalog) */}
             <Route path="katalog" element={<CatalogPage />} />
 
             {/* Dynamic Route: Detail Buku (/buku/:id) */}
             <Route path="buku/:id" element={<BookDetailPage />} />
 
-            {/* Halaman Catatan & Koleksi Lokal (/catatan) */}
+            {/* Notes & Collection Page (/catatan) */}
             <Route path="catatan" element={<NotesPage />} />
 
-            {/* Fallback route */}
+            {/* 404 Fallback */}
             <Route path="*" element={<Navigate to="/katalog" replace />} />
           </Route>
         </Routes>
@@ -34,4 +35,4 @@ export const App: React.FC = () => {
   );
 };
 
-export default App;
+export default AppRouterWrapper;

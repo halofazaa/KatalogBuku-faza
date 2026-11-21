@@ -1,17 +1,15 @@
 # Dependencies
-node_modules
+node_modules/
 .pnp
 .pnp.js
 
-# Testing
-coverage
-
 # Next.js build output
-backend/.next/
-backend/out/
+.next/
+out/
 
-# Vite production build
-frontend/dist/
+# Production
+build/
+dist/
 
 # Misc
 .DS_Store
@@ -31,8 +29,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Editor directories
-.idea
-.vscode
+.idea/
+.vscode/
 *.suo
 *.ntvs*
 *.njsproj

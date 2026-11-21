@@ -57,7 +57,7 @@ export const MainLayout: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="http://localhost:3001/api/books"
+                    href="/api/books"
                     target="_blank"
                     rel="noreferrer"
                     className="hover:text-orange-600 transition-colors inline-flex items-center gap-1"

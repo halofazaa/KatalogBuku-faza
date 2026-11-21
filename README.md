@@ -1,6 +1,6 @@
 # 📚 BookCatalog — Aplikasi Web Katalog Buku Interaktif
 > **Proyek Tugas Pemrograman Aplikasi Web (PAW)**  
-> **Arsitektur:** Monorepo (Frontend React + Backend Next.js API Proxy + TypeScript)  
+> **Arsitektur:** Single Fullstack Next.js Project (Next.js App Router API Handlers + React Router Client-Side + TypeScript)  
 > **Desain UI:** Adaptasi estetika CureLens (*Clean, Airy, Card-based*), Palet Aksen Oranye, dan Tipografi Manrope (*Tabular Numbers*).
 
 ---
@@ -8,20 +8,22 @@
 ## 📑 Daftar Isi
 1. [Ringkasan Proyek & Tujuan](#1-ringkasan-proyek--tujuan)
 2. [Sistem Desain UI (CureLens + Aksen Oranye)](#2-sistem-desain-ui)
-3. [Arsitektur & Struktur Folder Monorepo](#3-arsitektur--struktur-folder-monorepo)
+3. [Arsitektur & Struktur Folder Proyek](#3-arsitektur--struktur-folder-proyek)
 4. [Kebutuhan Fungsional & Fitur Utama](#4-kebutuhan-fungsional--fitur-utama)
 5. [Implementasi 5 Jenis State Management](#5-implementasi-5-jenis-state-management)
 6. [Spesifikasi Backend API (Next.js Route Handlers)](#6-spesifikasi-backend-api-nextjs-route-handlers)
 7. [Panduan Instalasi & Menjalankan Aplikasi](#7-panduan-instalasi--menjalankan-aplikasi)
-8. [Panduan Deployment & Pengumpulan](#8-panduan-deployment--pengumpulan)
+8. [Panduan Deployment Vercel (1-Click Instant Deploy)](#8-panduan-deployment-vercel-1-click-instant-deploy)
 
 ---
 
 ## 1. Ringkasan Proyek & Tujuan
 
-**BookCatalog** adalah aplikasi katalog buku modern dan interaktif yang memadukan keunggulan **React (Client-Side Rendering dengan React Router)** untuk pengalaman pengguna yang dinamis tanpa *page reload*, serta **Next.js (App Router Route Handlers)** sebagai lapisan *backend proxy & aggregator*.
-
-Backend bertugas mengambil data dari public API katalog buku (Google Books API / Open Library API), menormalisasi skema data, mengimplementasikan *server-side search, filtering, sorting, pagination*, serta mengamankan komunikasi API dari masalah CORS.
+**BookCatalog** adalah aplikasi katalog buku modern dan interaktif yang dibangun sebagai **satu kesatuan proyek Next.js tunggal (*Single Project*)**. 
+Arsitektur ini memadukan:
+1. **Frontend React dengan React Router:** Pengalaman pengguna yang responsif (*Client-Side Routing*, *Nested Routes*, *Dynamic Routes*) tanpa *reload* halaman penuh.
+2. **Backend Next.js Route Handlers (`src/app/api/books/...`):** Berfungsi sebagai API *proxy* dan *aggregator* yang mengambil data dari public API (Google Books API), memfilter, mengurutkan, menormalisasi data, serta menyediakan *fallback repository* mandiri.
+3. **Kemudahan Deployment:** Berjalan dalam satu domain, satu port, tanpa masalah CORS, dan otomatis dikenali sebagai **Next.js** saat di-deploy ke Vercel.
 
 ---
 
@@ -41,62 +43,56 @@ Aplikasi ini mengadaptasi estetika antarmuka **CureLens** dengan penyesuaian khu
 
 ---
 
-## 3. Arsitektur & Struktur Folder Monorepo
+## 3. Arsitektur & Struktur Folder Proyek
 
-Struktur direktori memisahkan tanggung jawab (*separation of concerns*) secara ketat antara antarmuka, logika aplikasi, akses layanan HTTP, dan backend Next.js:
+Semua modul berada di dalam satu proyek rapi di bawah folder `src/`:
 
 ```plaintext
 book-catalog-app/
-├── backend/                          # Next.js Backend (TypeScript)
-│   ├── src/
-│   │   ├── app/
-│   │   │   └── api/
-│   │   │       └── books/
-│   │   │           ├── route.ts      # GET /api/books (search, filter, sort, pagination)
-│   │   │           └── [id]/
-│   │   │               └── route.ts  # GET /api/books/[id] (detail buku & related)
-│   │   ├── lib/
-│   │   │   └── externalBookApi.ts    # Integrasi API publik + fallback repository
-│   │   └── types/
-│   │       └── book.ts               # Shared TypeScript interfaces
-│   ├── next.config.mjs               # Konfigurasi CORS & headers Next.js
-│   ├── tsconfig.json                 # TypeScript compiler backend
-│   └── package.json
-│
-├── frontend/                         # React + TypeScript (.tsx) + React Router
-│   ├── src/
-│   │   ├── components/               # 7 Reusable UI Components
-│   │   │   ├── Navbar.tsx            # Header dengan kapsul navigasi oranye
-│   │   │   ├── HeroHeader.tsx        # Badge oranye, judul, & kartu status kanan
-│   │   │   ├── StepperBar.tsx        # Bilah 3 langkah bernomor
-│   │   │   ├── CategoryChipGroup.tsx # Pilihan chip kategori + input kustom
-│   │   │   ├── BookCard.tsx          # Kartu buku bergaya clean rounded-3xl
-│   │   │   ├── Pagination.tsx        # Navigasi halaman tabular-nums
-│   │   │   └── NoteForm.tsx          # Formulir controlled + validasi ketat
-│   │   ├── pages/                    # Halaman React Router (.tsx)
-│   │   │   ├── CatalogPage.tsx       # Halaman utama katalog (/katalog)
-│   │   │   ├── BookDetailPage.tsx    # Halaman dynamic route (/buku/:id)
-│   │   │   └── NotesPage.tsx         # Halaman catatan lokal (/catatan)
-│   │   ├── layouts/
-│   │   │   └── MainLayout.tsx        # Nested route layout (<Outlet />)
-│   │   ├── hooks/                    # Custom Hooks (.ts)
-│   │   │   ├── useBooks.ts           # Fetch server state + loading/error/empty
-│   │   │   └── useDebounce.ts        # Debounce input pencarian
-│   │   ├── services/                 # Akses HTTP ke Next.js Backend (.ts)
-│   │   │   └── bookService.ts        # Service layer API
-│   │   ├── context/                  # Context API Global State (.tsx)
-│   │   │   └── BookContext.tsx       # Manajemen catatan, favorit, & custom tags
-│   │   ├── types/                    # Definisi Interface & Type TypeScript (.ts)
-│   │   │   └── book.ts
-│   │   ├── App.tsx                   # Konfigurasi React Router (nested & dynamic)
-│   │   ├── main.tsx                  # Entry point React 18
-│   │   └── index.css                 # Font Manrope, tema oranye & tabular-nums
-│   ├── tailwind.config.js            # Konfigurasi palet tema & typography
-│   ├── vite.config.ts                # Vite config & API reverse proxy
-│   └── package.json
-│
-├── package.json                      # Root Monorepo Orchestration Scripts
-└── README.md                         # Dokumentasi teknis lengkap
+├── package.json                      # Konfigurasi dependensi tunggal
+├── tsconfig.json                     # Konfigurasi TypeScript & path alias (@/*)
+├── next.config.mjs                   # Konfigurasi Next.js
+├── tailwind.config.js                # Konfigurasi tema warna & typography
+├── postcss.config.js
+├── README.md                         # Dokumentasi teknis lengkap
+└── src/
+    ├── app/
+    │   ├── api/
+    │   │   └── books/
+    │   │       ├── route.ts          # GET /api/books (search, filter, sort, pagination)
+    │   │       └── [id]/
+    │   │           └── route.ts      # GET /api/books/[id] (detail lengkap & related books)
+    │   ├── [[...slug]]/
+    │   │   ├── page.tsx              # Catch-all page Next.js untuk React Router
+    │   │   └── ClientApp.tsx         # Client component loader
+    │   ├── layout.tsx                # Root layout HTML & Font Manrope
+    │   └── globals.css               # Styling global, tema oranye & tabular-nums
+    ├── components/
+    │   ├── AppRouterWrapper.tsx      # Pembungkus React Router (<BrowserRouter>)
+    │   ├── Navbar.tsx                # Header dengan kapsul navigasi oranye
+    │   ├── HeroHeader.tsx            # Badge oranye, judul, & kartu status kanan
+    │   ├── StepperBar.tsx            # Bilah 3 langkah bernomor
+    │   ├── CategoryChipGroup.tsx     # Pilihan chip kategori + input kustom
+    │   ├── BookCard.tsx              # Kartu buku bergaya clean rounded-3xl
+    │   ├── Pagination.tsx            # Navigasi halaman tabular-nums
+    │   └── NoteForm.tsx              # Formulir controlled + validasi ketat
+    ├── views/                        # Halaman Aplikasi (React Router)
+    │   ├── CatalogPage.tsx           # Halaman utama katalog (/katalog)
+    │   ├── BookDetailPage.tsx        # Halaman dynamic route (/buku/:id)
+    │   └── NotesPage.tsx             # Halaman catatan lokal (/catatan)
+    ├── layouts/
+    │   └── MainLayout.tsx            # Nested route layout (<Outlet />)
+    ├── hooks/                        # Custom Hooks
+    │   ├── useBooks.ts               # Fetch server state + loading/error/empty
+    │   └── useDebounce.ts            # Debounce input pencarian
+    ├── services/                     # Akses HTTP ke Endpoint API
+    │   └── bookService.ts            # Service layer API
+    ├── context/                      # Context API Global State
+    │   └── BookContext.tsx           # Manajemen catatan, favorit, & custom tags
+    ├── types/                        # Definisi Interface & Type TypeScript
+    │   └── book.ts
+    └── lib/
+        └── externalBookApi.ts        # Integrasi Google Books API + Curated Fallback
 ```
 
 ---
@@ -148,14 +144,12 @@ Aplikasi ini menerapkan kelima jenis state management sesuai ketentuan PRD:
 | **Local State** | Mengelola status UI lokal komponen mandiri. | `useState` pada `CatalogPage.tsx` (input teks sebelum debounce, aktif stepper), `Navbar.tsx` (buka/tutup mobile drawer), dan `BookDetailPage.tsx` (modal catatan). |
 | **Global State** | Berbagi data lintas halaman menggunakan React Context API. | `src/context/BookContext.tsx` untuk menyimpan daftar catatan bacaan, status membaca (*completed / reading / want-to-read*), ID buku favorit, dan tag kustom yang dipersistensikan ke `localStorage`. |
 | **Server State** | Mengelola status permintaan data backend (loading, error, empty, refetch). | Custom hook `src/hooks/useBooks.ts` yang mengelola `books`, `isLoading`, `error`, `isEmpty`, `totalPages`, dan fungsi `refetch()`. |
-| **URL State** | Menyinkronkan parameter pencarian, filter, sort, dan pagination ke URL query string. | `useSearchParams` pada `src/pages/CatalogPage.tsx` (`?q=clean&category=Technology&sort=year_desc&page=1`), sehingga URL dapat dibagikan (*shareable*) atau di-refresh tanpa kehilangan filter. |
+| **URL State** | Menyinkronkan parameter pencarian, filter, sort, dan pagination ke URL query string. | `useSearchParams` pada `src/views/CatalogPage.tsx` (`?q=clean&category=Technology&sort=year_desc&page=1`), sehingga URL dapat dibagikan (*shareable*) atau di-refresh tanpa kehilangan filter. |
 | **Form State** | Mengontrol nilai input form dan error validasi terstruktur dengan TypeScript. | `src/components/NoteForm.tsx` dengan tipe `NoteFormState` dan `NoteFormErrors` untuk mengontrol controlled inputs dan menampilkan inline error messages. |
 
 ---
 
 ## 6. Spesifikasi Backend API (Next.js Route Handlers)
-
-Backend berjalan secara independen pada port `3001` (atau melalui reverse proxy frontend Vite di port `5173`):
 
 ### 1. `GET /api/books`
 - **Query Parameters:**
@@ -164,133 +158,50 @@ Backend berjalan secara independen pada port `3001` (atau melalui reverse proxy 
   - `sort` *(opsional)*: `relevance` | `title_asc` | `title_desc` | `year_desc` | `year_asc` | `rating_desc`.
   - `page` *(opsional, default: 1)*: Nomor halaman.
   - `limit` *(opsional, default: 12)*: Jumlah buku per halaman.
-- **Contoh Respons JSON:**
-```json
-{
-  "books": [
-    {
-      "id": "clean-code-01",
-      "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
-      "authors": ["Robert C. Martin"],
-      "description": "Even bad code can function...",
-      "publisher": "Prentice Hall",
-      "publishedYear": 2008,
-      "pageCount": 464,
-      "categories": ["Technology", "Programming"],
-      "thumbnail": "https://...",
-      "averageRating": 4.7,
-      "ratingsCount": 3840
-    }
-  ],
-  "totalItems": 12,
-  "page": 1,
-  "limit": 12,
-  "totalPages": 1,
-  "query": "clean",
-  "category": "Technology",
-  "sort": "relevance"
-}
-```
 
 ### 2. `GET /api/books/[id]`
-- **URL Parameter:** `id` (ID unik buku).
-- **Contoh Respons JSON:**
-```json
-{
-  "book": {
-    "id": "clean-code-01",
-    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
-    "authors": ["Robert C. Martin"],
-    ...
-  },
-  "relatedBooks": [ ... ]
-}
-```
+- **URL Parameter:** `id` (ID unik buku). Mengembalikan detail lengkap beserta buku terkait (*related books*).
 
 ---
 
-## 7. Panduan Instalasi & Menjalankan Aplikasi
-
-Pastikan di komputer Anda telah terinstal **Node.js** (versi 18.x atau lebih baru).
+## 7. Panduan Instalasi & Menjalankan Aplikasi di Lokal
 
 ### Langkah 1: Kloning Repository
 ```bash
-git clone <URL_REPOSITORY_ANDA>
-cd "PAW8-Katalog Buku"
+git clone https://github.com/halofazaa/KatalogBuku-faza.git
+cd "KatalogBuku-faza"
 ```
 
 ### Langkah 2: Menginstal Dependensi
-
-Buka terminal dan instal dependensi di kedua sisi:
-
-**Terminal 1 (Backend Next.js):**
-```bash
-cd backend
+```cmd
 npm install
 ```
 
-**Terminal 2 (Frontend React):**
-```bash
-cd frontend
-npm install
-```
-
----
-
-### Langkah 3: Menjalankan Mode Pengembangan (*Development*)
-
-**Jalankan Backend (Next.js - Port 3001):**
-```bash
-cd backend
+### Langkah 3: Menjalankan Server Pengembangan (*Development*)
+```cmd
 npm run dev
 ```
-*Backend aktif di: `http://localhost:3001`*
+Buka browser di: **[http://localhost:3000](http://localhost:3000)**  
+Endpoint API aktif di: **[http://localhost:3000/api/books](http://localhost:3000/api/books)**
 
-**Jalankan Frontend (React + Vite - Port 5173):**
-```bash
-cd frontend
-npm run dev
-```
-*Buka browser di: `http://localhost:5173`*
-
-> **Tips:** Vite telah dikonfigurasi dengan reverse proxy otomatis untuk `/api`, sehingga permintaan frontend ke `/api/books` akan secara otomatis diteruskan ke backend Next.js di `http://localhost:3001/api/books`.
-
----
-
-### Langkah 4: Membangun untuk Produksi (*Production Build*)
-
-Untuk memverifikasi bahwa kode bebas dari *type error* TypeScript:
-
-```bash
-# Build Backend
-cd backend
-npm run build
-
-# Build Frontend
-cd ../frontend
+### Langkah 4: Uji Build Produksi
+```cmd
 npm run build
 ```
 
 ---
 
-## 8. Panduan Deployment & Pengumpulan
+## 8. Panduan Deployment Vercel (1-Click Instant Deploy)
 
-Sesuai instruksi PRD, aplikasi wajib diunggah dan ditampilkan pada website pribadi mahasiswa:
-
-1. **Deploy Frontend:**
-   - Direktori `frontend/` dapat di-deploy secara instan ke platform seperti **Vercel**, **Netlify**, atau **GitHub Pages**.
-   - Set Environment Variable pada dashboard hosting frontend:
-     `VITE_API_URL=https://nama-backend-anda.vercel.app` (jika backend di-deploy terpisah).
-2. **Deploy Backend Next.js:**
-   - Direktori `backend/` dapat di-deploy langsung ke **Vercel** atau **Railway**.
-3. **Materi Pengumpulan Tugas:**
-   - **Tautan Website:** Tautan live demo yang dapat diakses publik.
-   - **Tautan Repository GitHub:** Link publik ke repository ini.
-   - **Tangkapan Layar (Screenshot):**
-     1. Halaman Beranda / Katalog Utama (`/katalog`) dengan filter aktif.
-     2. Halaman Detail Buku (`/buku/:id`).
-     3. Halaman Catatan & Koleksi (`/catatan`) beserta formulir validasi.
-     4. Bukti respons JSON dari Next.js Route Handler (`/api/books`).
+Karena proyek sekarang adalah **Single Next.js Project**:
+1. Buka dashboard [Vercel](https://vercel.com).
+2. Klik **Add New...** &rarr; **Project**.
+3. Pilih repository `KatalogBuku-faza`.
+4. Vercel akan otomatis mengenali:
+   - **Framework Preset:** `Next.js`
+   - **Root Directory:** `./`
+5. Langsung klik **Deploy** tanpa perlu mengubah konfigurasi apapun!
+6. Selesai! Web langsung online dalam hitungan detik.
 
 ---
 *Dibuat untuk memenuhi Tugas Mata Kuliah Pemrograman Aplikasi Web (PAW).*
