@@ -2,13 +2,20 @@
 > **Proyek Tugas Pemrograman Aplikasi Web (PAW)**  
 > **Arsitektur:** Single Fullstack Next.js Project (Next.js App Router API Handlers + React Router Client-Side + TypeScript)  
 > **Desain UI:** Adaptasi estetika CureLens (*Clean, Airy, Card-based*), Palet Aksen Oranye, dan Tipografi Manrope (*Tabular Numbers*).
+<img width="1127" height="762" alt="Screenshot 2026-11-21 131021" src="https://github.com/user-attachments/assets/1527141d-68a0-4a5f-9aab-cb9fd96dc768" />
+<img width="1138" height="861" alt="Screenshot 2026-11-21 131033" src="https://github.com/user-attachments/assets/41aa1d9a-3b27-4013-9bc0-46a0431d6ac9" />
+<img width="1186" height="702" alt="Screenshot 2026-11-21 131045" src="https://github.com/user-attachments/assets/0f109144-8148-4f0c-8be5-427f047d4afc" />
+<img width="1105" height="822" alt="Screenshot 2026-11-21 131138" src="https://github.com/user-attachments/assets/c5ba248b-9b01-47f1-a9d7-3a1ef14dd77e" />
+
+
+
 
 ---
 
 ## 📑 Daftar Isi
 1. [Ringkasan Proyek & Tujuan](#1-ringkasan-proyek--tujuan)
 2. [Sistem Desain UI (CureLens + Aksen Oranye)](#2-sistem-desain-ui)
-3. [Arsitektur & Struktur Folder Proyek](#3-arsitektur--struktur-folder-proyek)
+3. [Arsitektur & Struktur Folder Monorepo](#3-arsitektur--struktur-folder-monorepo)
 4. [Kebutuhan Fungsional & Fitur Utama](#4-kebutuhan-fungsional--fitur-utama)
 5. [Implementasi 5 Jenis State Management](#5-implementasi-5-jenis-state-management)
 6. [Spesifikasi Backend API (Next.js Route Handlers)](#6-spesifikasi-backend-api-nextjs-route-handlers)
@@ -29,7 +36,6 @@ Arsitektur ini memadukan:
 
 ## 2. Sistem Desain UI
 
-Aplikasi ini mengadaptasi estetika antarmuka **CureLens** dengan penyesuaian khusus:
 - **Tipografi (Manrope):** Menggunakan font modern **Manrope** (bobot 400, 500, 600, 700, 800) dari Google Fonts, dilengkapi kelas utilitas `tabular-nums` untuk perataan angka pada nomor halaman, tahun terbit, dan indikator kuantitatif.
 - **Palet Warna Aksen Oranye:**
   - `Primary Orange` (`#F97316` / `#EA580C`): Tombol navigasi aktif, badge kategori, stepper aktif, ring fokus input, dan tombol aksi utama (*pill button* kanan bawah).
