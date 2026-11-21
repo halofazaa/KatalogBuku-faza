@@ -2,6 +2,13 @@
 > **Proyek Tugas Pemrograman Aplikasi Web (PAW)**  
 > **Arsitektur:** Monorepo (Frontend React + Backend Next.js API Proxy + TypeScript)  
 > **Desain UI:** Adaptasi estetika CureLens (*Clean, Airy, Card-based*), Palet Aksen Oranye, dan Tipografi Manrope (*Tabular Numbers*).
+<img width="1127" height="762" alt="Screenshot 2026-11-21 131021" src="https://github.com/user-attachments/assets/1527141d-68a0-4a5f-9aab-cb9fd96dc768" />
+<img width="1138" height="861" alt="Screenshot 2026-11-21 131033" src="https://github.com/user-attachments/assets/41aa1d9a-3b27-4013-9bc0-46a0431d6ac9" />
+<img width="1186" height="702" alt="Screenshot 2026-11-21 131045" src="https://github.com/user-attachments/assets/0f109144-8148-4f0c-8be5-427f047d4afc" />
+<img width="1105" height="822" alt="Screenshot 2026-11-21 131138" src="https://github.com/user-attachments/assets/c5ba248b-9b01-47f1-a9d7-3a1ef14dd77e" />
+
+
+
 
 ---
 
