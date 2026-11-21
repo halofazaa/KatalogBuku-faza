@@ -14,7 +14,7 @@
 
 ## 📑 Daftar Isi
 1. [Ringkasan Proyek & Tujuan](#1-ringkasan-proyek--tujuan)
-2. [Sistem Desain UI (CureLens + Aksen Oranye)](#2-sistem-desain-ui)
+2. [Sistem Desain UI](#2-sistem-desain-ui)
 3. [Arsitektur & Struktur Folder Monorepo](#3-arsitektur--struktur-folder-monorepo)
 4. [Kebutuhan Fungsional & Fitur Utama](#4-kebutuhan-fungsional--fitur-utama)
 5. [Implementasi 5 Jenis State Management](#5-implementasi-5-jenis-state-management)
@@ -34,7 +34,6 @@ Backend bertugas mengambil data dari public API katalog buku (Google Books API /
 
 ## 2. Sistem Desain UI
 
-Aplikasi ini mengadaptasi estetika antarmuka **CureLens** dengan penyesuaian khusus:
 - **Tipografi (Manrope):** Menggunakan font modern **Manrope** (bobot 400, 500, 600, 700, 800) dari Google Fonts, dilengkapi kelas utilitas `tabular-nums` untuk perataan angka pada nomor halaman, tahun terbit, dan indikator kuantitatif.
 - **Palet Warna Aksen Oranye:**
   - `Primary Orange` (`#F97316` / `#EA580C`): Tombol navigasi aktif, badge kategori, stepper aktif, ring fokus input, dan tombol aksi utama (*pill button* kanan bawah).
